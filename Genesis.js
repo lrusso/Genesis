@@ -1540,7 +1540,11 @@ var JoyStick = function JoyStick(t, e) {var i = void 0 === (e = e || {}).title ?
 
             globals.window["GENESIS"].HEAPU8.set(data, bufPtr)
 
-            globals.window["GENESIS_PICO_STATE_LOAD"]()
+            // the core rejected the state: leave the emulator untouched
+            // rather than resetting audio for a load that never happened.
+            if (!globals.window["GENESIS_PICO_STATE_LOAD"]()) {
+              return
+            }
 
             globals.window["GENESIS_NEXT_AUDIO_TIME"] = 0
             globals.window["GENESIS_AUDIO_START_TIME"] = null
