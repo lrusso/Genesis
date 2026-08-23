@@ -56,6 +56,7 @@ var JoyStick = function JoyStick(t, e) {var i = void 0 === (e = e || {}).title ?
   globals.window["GENESIS_JOYSTICK"] = null
   globals.window["GENESIS_LAST_MOUSE_X"] = null
   globals.window["GENESIS_LAST_MOUSE_Y"] = null
+  globals.window["GENESIS_STATE_INPUT"] = null
   globals.window["GENESIS_BACK_TEXT"] = "BACK"
   globals.window["GENESIS_SOUND_TEXT"] = "SOUND"
   globals.window["GENESIS_LOAD_TEXT"] = "LOAD"
@@ -1484,9 +1485,29 @@ var JoyStick = function JoyStick(t, e) {var i = void 0 === (e = e || {}).title ?
         return
       }
 
+      // drop the input used by the previous call, if the picker was cancelled
+      // it is still hanging around in the DOM.
+      if (
+        globals.window["GENESIS_STATE_INPUT"] &&
+        globals.window["GENESIS_STATE_INPUT"].parentNode
+      ) {
+        globals.window["GENESIS_STATE_INPUT"].parentNode.removeChild(
+          globals.window["GENESIS_STATE_INPUT"]
+        )
+      }
+      globals.window["GENESIS_STATE_INPUT"] = null
+
       var input = globals.document.createElement("input")
       input.type = "file"
       input.accept = ".state"
+      input.style.display = "none"
+
+      // the input must stay in the DOM while the native file picker is open.
+      // on ios safari a detached input (and its change listener) can be
+      // garbage collected while the page sits in the background behind the
+      // picker, and then the change event never fires.
+      document.getElementsByTagName("body")[0].appendChild(input)
+      globals.window["GENESIS_STATE_INPUT"] = input
 
       input.addEventListener("change", function (event) {
         var file = event.target.files[0]
