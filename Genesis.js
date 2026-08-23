@@ -712,15 +712,27 @@ var JoyStick = function JoyStick(t, e) {var i = void 0 === (e = e || {}).title ?
       })
 
       globals.window.addEventListener("focus", function () {
+        // Not gated on GENESIS_GAME_PAUSED alone: ios can fire a spurious
+        // focus that clears it while the emulator is still in the background,
+        // so a dead loop also counts as needing a resume.
         if (
           globals.window["GENESIS_GAME_BOOTED"] &&
-          globals.window["GENESIS_GAME_PAUSED"]
+          (globals.window["GENESIS_GAME_PAUSED"] ||
+            globals.window["GENESIS_ANIM_FRAME_ID"] === null)
         ) {
           globals.window["GENESIS_GAME_PAUSED"] = false
           globals.window["GENESIS_NEXT_AUDIO_TIME"] = 0
           globals.window["GENESIS_AUDIO_START_TIME"] = null
           globals.window["GENESIS_LAST_FRAME_TIME"] = performance.now()
           globals.window["GENESIS_FRAME_ACCUMULATOR"] = 0
+
+          // cancel first so a stale id can never leave two loops running the
+          // core at double speed.
+          if (globals.window["GENESIS_ANIM_FRAME_ID"]) {
+            cancelAnimationFrame(globals.window["GENESIS_ANIM_FRAME_ID"])
+            globals.window["GENESIS_ANIM_FRAME_ID"] = null
+          }
+
           globals.window["runFrameGenesis"](performance.now())
         }
 
