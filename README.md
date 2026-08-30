@@ -98,7 +98,7 @@ This emulator is compatible with both Android and iOS devices. However, WebKit o
 ## Main differences with the original project:
 
 - Transpiled JS to pre-ES2015 via `node ConverterES5.js picodrive.js`.
-- Fixed graphical glitches in Another World and Virtua Racing Deluxe for 32X.
+- Fixed graphical glitches in Another World and Virtua Racing Deluxe.
 
 ## This is a modified version of PicoDrive:
 
