@@ -800,7 +800,7 @@ var JoyStick=function(t,e){var i=void 0===(e=e||{}).title?"joystick":e.title,n=v
       }
 
       if (config.showMobileControls) {
-        function sendVirtualKey(keyState, keyValue) {
+        var sendVirtualKey = function (keyState, keyValue) {
           var oEvent = new KeyboardEvent(keyState, {
             bubbles: true,
             cancelable: false,
