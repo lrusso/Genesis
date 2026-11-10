@@ -19,7 +19,7 @@ A Sega Genesis and 32x emulator with mobile compatibility designed for running i
 
 ## How to use it:
 
-Examples of loading local and online files can be found [here](https://github.com/lrusso/Genesis/blob/main/Genesis.htm#L141-L193) and [here](https://github.com/lrusso/Genesis/blob/main/Genesis.htm#L221-L268).
+Examples of loading local and online files can be found [here](https://github.com/lrusso/Genesis/blob/main/Genesis.htm#L166-L218) and [here](https://github.com/lrusso/Genesis/blob/main/Genesis.htm#L249-L296).
 
 ```js
 embedGenesis({
